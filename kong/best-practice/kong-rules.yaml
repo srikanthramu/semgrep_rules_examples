@@ -1,0 +1,56 @@
+rules:
+- id: insecure-admin-all-interfaces
+  patterns:
+  - pattern: admin_listen = 0.0.0.0:$PORT
+  paths:
+    include:
+    - '*.conf'
+  languages:
+  - generic
+  severity: WARNING
+  message: >-
+    Detected configurations to bind Kong Admin API to all interfaces.
+  metadata:
+    references:
+    - https://docs.konghq.com/gateway/2.6.x/admin-api/secure-admin-api/
+    category: security
+    technology:
+    - Kong Gateway
+
+- id: no-pg-ssl
+  pattern-either:
+  - pattern: pg_ssl = off
+  paths:
+    include:
+    - '*.conf'
+  languages:
+  - generic
+  severity: WARNING
+  message: >-
+    Connection between Kong and PostgreSQL is not over TLS
+  metadata:
+    references:
+    - https://docs.konghq.com/gateway/2.6.x/reference/configuration/#postgres-settings
+    category: security
+    technology:
+    - Kong Gateway
+    - PostgreSQL
+
+- id: no-pg-ssl-verify
+  patterns:
+  - pattern: pg_ssl_verify = off
+  paths:
+    include:
+    - '*.conf'
+  languages:
+  - generic
+  severity: WARNING
+  message: >-
+    Server certificate verification is disabled.
+  metadata:
+    references:
+    - https://docs.konghq.com/gateway/2.6.x/reference/configuration/#postgres-settings
+    category: security
+    technology:
+    - Kong Gateway
+    - PostgreSQL
